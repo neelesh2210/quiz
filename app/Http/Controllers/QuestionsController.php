@@ -47,9 +47,9 @@ class QuestionsController extends Controller
           $array1=array_merge($physics_questions->toArray(),$chemistry_questions->toArray());
           $final_array=array_merge($array1,$biology_questions->toArray());
           $questions = $this->paginate($final_array);
-          //return [$questions,Question::where('topic_id',$id)->where('subject','physics')->paginate(1)];
           if($request->ajax())
           {
+              
               return view('quiz.question.question',compact('questions','topic'));
           }
           else
