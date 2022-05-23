@@ -56,7 +56,10 @@ class LoginController extends Controller {
             }
            
     }else{
-        return redirect()->back()->withErrors("Opps!! OTP incorrect.");
+       $messag = "Opps!! OTP incorrect.";
+       $user = $isUser;
+        return view('auth.getotp')->with(compact('user','messag'));
+       // return back()->with('error','Opps!! OTP incorrect.');
     }
     } 
         return redirect()->back()->withErrors("User Not Found");

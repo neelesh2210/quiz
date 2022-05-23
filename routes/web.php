@@ -70,8 +70,17 @@ Route::post('/logout', 'LoginController@logout')->name('logout');
 
   Route::get('/admin/profile', function(){
     if (Auth::check()) {
+        return view('admin.users.profile');  
+   
+    } else {
+      return redirect('/');
+    }
+  });
+
+  Route::get('/admin/reprofile', function(){
+    if (Auth::check()) {
       if(auth()->user()->name){
-        return view('admin.users.profile'); 
+        return redirect('/');
       }else{
         return view('admin.users.profile');  
       }
