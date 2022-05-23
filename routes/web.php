@@ -24,7 +24,7 @@ Route::group(['middleware'=> 'coming_soon'], function(){
 
   Route::redirect('/', 'home');
   // Auth::routes();
-
+  Route::get('/resend/{mobile_number}', 'LoginController@resend')->name('site.ui');
   /*facebook login route*/
 Route::get('/register', 'LoginController@index')->name('login');
 Route::post('/otp', 'LoginController@verify')->name('site.otp.send');
@@ -70,7 +70,11 @@ Route::post('/logout', 'LoginController@logout')->name('logout');
 
   Route::get('/admin/profile', function(){
     if (Auth::check()) {
-      return view('admin.users.profile');
+      if(auth()->user()->name){
+        return view('admin.users.profile'); 
+      }else{
+        return view('admin.users.profile');  
+      }
     } else {
       return redirect('/');
     }

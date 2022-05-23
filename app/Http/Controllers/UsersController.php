@@ -18,7 +18,7 @@ class UsersController extends Controller
     public function index(Request $request)
     {
        
-        $users = \DB::table('users')->where('role','!=' , 'A')->select('id','image','name','email','mobile','role','city','address');
+        $users = \DB::table('users')->where('role','!=' , 'A')->select('id','image','name','email','mobile','role','city','address', 'whatsappnum', 'board', 'class1');
 
         if($request->ajax()){
           return DataTables::of($users)
@@ -40,6 +40,15 @@ class UsersController extends Controller
           ->addColumn('mobile',function($row){
               return $row->mobile;
           })
+          ->addColumn('whatsappnum',function($row){
+            return $row->whatsappnum;
+          })
+          ->addColumn('board',function($row){
+          return $row->board;
+          })
+          ->addColumn('class1',function($row){
+           return $row->class1;
+           })
           ->addColumn('role',function($row){
               return $row->role == 'S' ? 'Student' : '-';
           })
@@ -83,7 +92,7 @@ class UsersController extends Controller
                 return $btn;
 
           })
-          ->rawColumns(['image','name','email','mobile','role','city','address','action'])
+          ->rawColumns(['image','name','email','mobile','role','city','address','whatsappnum', 'board', 'class1','action'])
           ->make(true);
         }
         return view('admin.users.index', compact('users'));
@@ -113,12 +122,18 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'mobile' => 'unique:users|min:10',
+            'whatsappnum' => 'unique:users|min:10',
+            'board' => 'required|string|max:255',
+            'class1' => 'required|string|max:255',
             'password' => 'required|string|min:6',
           ]);
 
           $user->name = $request->name;
           $user->email = $request->email;
           $user->mobile = $request->mobile;
+          $user->whatsappnum = $request->whatsappnum;
+          $user->board = $request->board;
+          $user->class1 = $request->class1;
           $user->address = $request->address;
           $user->role = $request->role;
           $user->city = $request->city;
@@ -231,6 +246,9 @@ class UsersController extends Controller
           $user->name = $request->name;
           $user->email = $request->email;
           $user->mobile = $request->mobile;
+          $user->whatsappnum = $request->whatsappnum;
+          $user->board = $request->board;
+          $user->class1 = $request->class1;
           $user->address = $request->address;
           $user->city = $request->city;
 

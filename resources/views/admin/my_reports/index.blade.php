@@ -10,11 +10,12 @@
 ])
 
 @section('content')
+  <div class="container" style="margin-top:30px;">
   <div class="row">
     @if ($topics)
       @foreach ($topics as $key => $topic)
 
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
           <div class="quiz-card">
             <h3 class="quiz-name">{{$topic->title}}</h3>
             <p title="{{$topic->description}}">
@@ -63,5 +64,6 @@
         </div>
       @endforeach
     @endif
+  </div>
   </div>
 @endsection

@@ -5106,11 +5106,12 @@
    width: 100% !important;
  }
  .select2-container--default .select2-selection--single {
-   border-radius: 4px !important;
+   border-radius: 0px !important;
    border-color: #d2d6de !important;
+   margin-top: -6px;
  }
  .select2-container .select2-selection--single {
-   height: 34px !important;
+   height: 36px !important;
  }
  
  .settings-block {

@@ -128,7 +128,8 @@
               <form class="form login-form" method="POST" action="{{ route('site.otp.send') }}">
                 {{ csrf_field() }}
                 <p>Receive OTP verification code on your mobile no.</p>
-                <input name="mobile" type="text" class="form-control" value="{{$user->mobile}}" />
+                <h4 style="color:#BC0808;text-align: center;">{{$user->mobile}}</h4>
+                <input name="mobile" type="hidden" class="form-control" value="{{$user->mobile}}" />
                 <!-- <div class="form-group">
                   <input id="otp_num" type="number" class="form-control" name="otp"  placeholder="Enter OTP" required>
                 </div>
@@ -152,6 +153,10 @@
                 </div>
 
               </form> 
+
+                <div class="text-center err-msg"> Opps!! OTP incorrect.</div>
+
+
             </div>
           </div>
         </div>    
