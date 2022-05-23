@@ -2,7 +2,7 @@
     <div class="quest_img">
         <span>Subject. {{ $question['subject'] }}</span><br>
         <span>Q. {{ $question['id'] }}</span> <br>
-        <img src="{{ public_path('images/questions/' . $question['question_img']) }}" class="w-100"
+        <img src="../../../images/questions/{{$question['question_img']}}" class="w-100"
             alt=""><br><br>
     </div>
     <form class="myform1" id="options">
@@ -25,8 +25,7 @@
         <br>
         <div id="verifiBtn">
             @if ($questions->currentPage() == $questions->lastPage())
-                <a class="btn col-auto btn-wave" href="#" onclick="final_submit()">Submit <i class="fa fa-arrow-right"
-                        aria-hidden="true"></i></a>
+                <a class="btn col-auto btn-wave" href="#" onclick="final_submit()">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             @else
                 <a onclick="next_question()" href="#" class="btn col-auto btn-wave">Next</a>
             @endif
