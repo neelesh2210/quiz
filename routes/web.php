@@ -94,6 +94,8 @@ Route::post('/logout', 'LoginController@logout')->name('logout');
 
   Route::get('start-quiz-index/{id}','QuestionsController@create')->name('start.quiz.index');
 
+  Route::post('answer-submit','QuestionsController@submitAnswer')->name('answer.quiz.index');
+
   Route::get('start_quiz/{id}', function($id){
     $topic = Topic::findOrFail($id);
     $answers = Answer::where('topic_id','=',$topic->topic_id)->first();

@@ -312,4 +312,15 @@ class QuestionsController extends Controller
         }
         
     }
+    public function submitAnswer(Request $request)
+    {
+      $answer = new Answer();
+      $answer->topic_id = $request->topic_id;
+      $answer->user_id = auth()->user()->id;
+      $answer->question_id = $request->question_id;
+      $answer->user_answer = $request->user_answer;
+      $answer->answer = $request->answer;
+      $answer->save();
+    }
+    
 }
