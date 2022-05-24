@@ -6,6 +6,10 @@
             alt=""><br><br>
     </div>
     <form class="myform1" id="options">
+        <input type="hidden" name="question_id" value="{{$question->id}}">
+        <input type="hidden" name="topic_id" value="{{$topic->id}}">
+        <input type="hidden" name="answer" value="{{$question->answer}}">
+      
         <label class="options">A
             <input type="radio" name="radio">
             <span class="checkmark"></span>
@@ -40,6 +44,17 @@
         $.ajax({
             url: "{{ asset('start-quiz-index/' . $topic->id . $questions->url($questions->currentPage() + 1)) }}",
             success: function(data) {
+                $.ajax({
+                    url: url,
+                            type: 'post',
+                            var id = 
+                            data: {rr: id,hhkj:jf},
+                            dataType: 'json',
+
+      success: function(response){
+//responce
+}
+                })
                 console.log(data);
                 $('#question_div').html(data);
             },
