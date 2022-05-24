@@ -36,7 +36,8 @@ class QuestionsController extends Controller
      */
     public function create(Request $request,$id)
     { 
-        $answer=Answer::where('topic_id',$id)->where('user_id',Auth::user()->id)->first();
+        //return $request->all();
+        $answer=Answer::where('topic_id',$id)->where('user_id',Auth::user()->id)->where('question_id',$request->question_id)->first();
         if(empty($answer))
         {
           $topic=Topic::where('id',$id)->first();
@@ -49,7 +50,14 @@ class QuestionsController extends Controller
           $questions = $this->paginate($final_array);
           if($request->ajax())
           {
-              
+              Answer::create([
+                'topic_id'=>$request->topic_id,
+                'user_id'=>Auth::user()->id,
+                'question_id'=>$request->question_id,
+                'user_answer'=>$request->user_answer,
+                'answer'=>Question::where('id',$request->question_id)->first()->answer
+              ]);
+
               return view('quiz.question.question',compact('questions','topic'));
           }
           else
