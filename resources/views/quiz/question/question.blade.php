@@ -42,7 +42,7 @@
         <br>
         <div id="verifiBtn">
             @if ($questions->currentPage() == $questions->lastPage())
-                <a class="btn col-auto btn-wave" href="#" onclick="final_submit()">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                <a class="btn col-auto btn-wave" href="#" onclick="myFunction()">Submit <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             @else
                 <a onclick="next_question()" id ="btnSubmit" href="#" class="btn col-auto btn-wave">Next</a>
             @endif
@@ -65,5 +65,13 @@
             },
         });
     }
+    function myFunction() {
+        var question_awn=$('#question_awn').val();
+        var topic_awn=$('#topic_awn').val();
+        var chcekk=$("input[name='user_answer']:checked").val();
+
+  location.replace("../start_quiz/"+topic_awn+"/finish/"+question_awn+"/"+chcekk)
+}
+    
 </script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

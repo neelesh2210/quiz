@@ -116,11 +116,11 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-          $user = new User;
+          $user = User::where('mobile',$request->mobile)->first();
 
           $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'mobile' => 'unique:users|min:10',
             'whatsappnum' => 'unique:users|min:10',
             'board' => 'required|string|max:255',
@@ -130,7 +130,7 @@ class UsersController extends Controller
 
           $user->name = $request->name;
           $user->email = $request->email;
-          $user->mobile = $request->mobile;
+     
           $user->whatsappnum = $request->whatsappnum;
           $user->board = $request->board;
           $user->class1 = $request->class1;
@@ -245,7 +245,6 @@ class UsersController extends Controller
         {
           $user->name = $request->name;
           $user->email = $request->email;
-          $user->mobile = $request->mobile;
           $user->whatsappnum = $request->whatsappnum;
           $user->board = $request->board;
           $user->class1 = $request->class1;
