@@ -17,9 +17,11 @@
           <tr>
             <th>#</th>
             <th>Student Name</th>
-            <th>Mobile No.</th>          
-            <th>Quiz</th>
-            <th>Total Question Marks</th>
+            <th>Mobile No.</th> 
+            <th>Whatsapp No.</th>   
+            <th>Board</th>   
+            <th>District</th>              
+            <th>Exam</th>
             <th>Marks You Got</th>
             
           </tr>
@@ -32,11 +34,11 @@
                   {{$key+1}}
                 </td>
                 <td>{{$student->name}}</td>
-                <td>{{$student->mobile ? $student->mobile : '-'}}</td>               
+                <td>{{$student->mobile ? $student->mobile : '-'}}</td>   
+                <td>{{$student->whatsappnum ? $student->whatsappnum : '-'}}</td>  
+                <td>{{$student->board}}</td>
+                <td>{{$student->city}}</td>             
                 <td>{{$topic->title}}</td>
-                <td>
-                  {{$c_que*$topic->per_q_mark}}
-                </td>
                 <td>
                   @php
                     $mark = 0;

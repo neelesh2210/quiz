@@ -1,5 +1,5 @@
 @extends('layouts.admin', [
-  'page_header' => 'Quiz',
+  'page_header' => 'Exam',
   'dash' => '',
   'quiz' => 'active',
   'users' => '',
@@ -42,9 +42,9 @@
             </div>
 
              
-             <label for="">Enable Show Answer: </label>
+             {{-- <label for="">Enable Show Answer: </label>
              <input {{ $topic->show_ans ==1 ? "checked" : "" }} type="checkbox" class="toggle-input" name="show_ans" id="toggle{{ $topic->id }}">
-             <label for="toggle{{ $topic->id }}"></label>
+             <label for="toggle{{ $topic->id }}"></label> --}}
             
              <label for="">Quiz Price:</label>
              <input onchange="showprice('{{ $topic->id }}')" {{ $topic->amount !=NULL  ? "checked" : ""}} type="checkbox" class="toggle-input " name="pricechk" id="toggle2{{ $topic->id }}">

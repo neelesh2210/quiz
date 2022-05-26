@@ -147,6 +147,20 @@ Route::post('/logout', 'LoginController@logout')->name('logout');
     return view('finish', compact('ans','q','topic', 'answers', 'count_questions'));
   });
 
+  Route::get('final_page/{id}', function($id){
+    $auth = Auth::user();
+
+    $topic = Topic::findOrFail($id);
+    $questions = Question::where('topic_id', $id)->get();
+    $count_questions = $questions->count();
+    $answers = Answer::where('user_id',$auth->id)->where('topic_id',$id)->get(); 
+
+    $ans= Answer::all();
+    $q= Question::all();
+    
+    return view('finish', compact('ans','q','topic', 'answers', 'count_questions'));
+  });
+
   Route::get('admin/moresettings/socialicons/','SocialController@index')->name('socialicons.index');
   Route::post('/admin/moresettings/socialicons/insert','SocialController@store')->name('social.store');
   Route::put('/admin/moresettings/socialicons/active/{id}','SocialController@active')->name('social.active');

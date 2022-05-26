@@ -150,14 +150,14 @@
               <div class="form-group{{ $errors->has('Board') ? ' has-error' : '' }}">
                 {!! Form::label('Board', 'Board') !!}
                 <span class="required">*</span>
-                {!! Form::select('board', array('CBSE'=>'CBSE', 'BSED'=>'BSED'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'Select Board']) !!}
+                {!! Form::select('board', array('CBSE'=>'CBSE','ICSE'=>'ICSE', 'State Board'=>'State Board'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'Select Board']) !!}
                 <small class="text-danger">{{ $errors->first('board') }}</small>
               </div>
               
               <div class="form-group{{ $errors->has('class1') ? ' has-error' : '' }}">
                 {!! Form::label('Class', 'Class') !!}
                 <span class="required">*</span>
-                {!! Form::select('class1', array('10th Pass'=>'10th Pass', '11th'=>'11th' ,'12th'=>'12th', '12th Pass'=>'12th Pass'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'Select Class']) !!}
+                {!! Form::select('class1', array('10th Passed/Apeared'=>'10th Passed/Apeared', '11th'=>'11th' ,'12th'=>'12th', '12th Pass'=>'12th Pass'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'Select Class']) !!}
                 <small class="text-danger">{{ $errors->first('class1') }}</small>
               </div>
 
@@ -186,16 +186,16 @@
           {!! Form::close() !!}
           <!-- Form End -->
 
-          @if(session()->has('error')){
+          @if(session()->has('error'))
 
             <div class="alert alert-danger text-center msg" role="alert">
                 {{ session()->get('error') }}
             </div>
-            }
 
             @endif
             
-            <div class="text-center err-msg"> Somethings are wrong. Please try again !!</div>
+            {{-- <div class="text-center err-msg"> Somethings are wrong. Please try again !!</div> --}}
+           
 
 
 

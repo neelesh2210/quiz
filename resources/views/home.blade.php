@@ -97,36 +97,26 @@
               <div class="topic-block">
                 <div class="card blue-grey darken-1">
                   <div class="card-content white-text">
-                    <span class="card-title">{{$topic->title}}</span>
-                    <p title="{{$topic->description}}">{{str_limit($topic->description, 120)}}</p>
+                    <center><span class="card-title">{{$topic->title}}</span>
+                    <p title="{{$topic->description}}">{{str_limit($topic->description, 120)}}</p></center>
                     <div class="row">
                       <div class="col-xs-6 pad-0">
                         <ul class="topic-detail">
+                          <li>Total Number of Questions <i class="fa fa-long-arrow-right"></i></li> 
                           <li>Per Question Mark <i class="fa fa-long-arrow-right"></i></li>
                           <li>Total Marks <i class="fa fa-long-arrow-right"></i></li>
-                          <li>Total Questions <i class="fa fa-long-arrow-right"></i></li>
                           <li>Total Time <i class="fa fa-long-arrow-right"></i></li>
                           <li>Quiz Price <i class="fa fa-long-arrow-right"></i></li>
                         </ul>
                       </div>
                       <div class="col-xs-6">
                         <ul class="topic-detail right">
+                          <li>
+                            15
+                          </li><br>
                           <li>{{$topic->per_q_mark}}</li>
-                          <li>
-                            @php
-                                $qu_count = 0;
-                            @endphp
-                            @foreach($questions as $question)
-                              @if($question->topic_id == $topic->id)
-                                @php 
-                                  $qu_count++;
-                                @endphp
-                              @endif
-                            @endforeach
-                            {{$topic->per_q_mark*$qu_count}}
-                          </li>
-                          <li>
-                            {{$qu_count}}
+                          <li>                            
+                            {{$topic->per_q_mark*15}}
                           </li>
                           <li>
                             {{$topic->timer}} minutes
@@ -134,7 +124,7 @@
 
                           <li class="amount">
                             @if(!empty($topic->amount))
-                            {{-- <i class="{{$setting->currency_symbol}}"></i> {{$topic->amount}}   --}}
+                            ₹{{$topic->amount}}</i> 
                              @else
                                Free
                             @endif
@@ -164,19 +154,26 @@
                     @if($auth->topic()->where('topic_id', $topic->id)->exists())
                       <a href="{{route('start_quiz', ['id' => $topic->id])}}" class="btn btn-block" title="Start Quiz">Start Quiz </a>
                     @else
+
+                    @php
+                      $check_quiz=App\Answer::where('user_id',Auth::user()->id)->where('topic_id',$topic->id)->first();
+                    @endphp
+                      @if (empty($check_quiz))
                       {!! Form::open(['method' => 'POST', 'action' => 'PaypalController@paypal_post']) !!} 
                         {{ csrf_field() }}
                         <input type="hidden" name="topic_id" value="{{$topic->id}}"/>
                          @if(!empty($topic->amount)) 
-
                         <button type="submit" class="btn btn-default">Pay  <i class="{{$setting->currency_symbol}}"></i>{{$topic->amount}}</button>
                           @else 
-
-                          <a href="{{route('start.quiz.index', ['id' => $topic->id])}}" class="btn btn-block" title="Start Quiz">Start Quiz </a>
-
+                          <a href="{{route('start.quiz.index', ['id' => $topic->id])}}" class="btn btn-block" title="Start Quiz">Start Quiz  </a>
                         @endif
 
-                      {!! Form::close() !!}
+                      {!! Form::close() !!}   
+                      
+                      @else
+                      <a href="../final_page/{{$topic->id}}" class="btn btn-block" title="Check Result">Check Result</a>
+                      @endif
+                   
                     @endif
                   </div>
 

@@ -52,7 +52,7 @@
                 <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
                     {!! Form::label('answer', 'Correct Answer') !!}
                     <span class="required">*</span>
-                    {!! Form::select('answer', array('A'=>'A', 'B'=>'B', 'C'=>'C', 'D'=>'D', 'E' => 'E', 'F' => 'F'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'']) !!}
+                    {!! Form::select('answer', array('A'=>'A', 'B'=>'B', 'C'=>'C', 'D'=>'D'),null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder'=>'']) !!}
                     <small class="text-danger">{{ $errors->first('answer') }}</small>
                 </div>Raj Complex, East Boring Canal Road
 Patna-800001, Bihar, India
@@ -89,17 +89,17 @@ Patna-800001, Bihar, India
                   <small class="text-danger">{{ $errors->first('d') }}</small>
                 </div>
 
-                  <div class="form-group{{ $errors->has('e') ? ' has-error' : '' }}">
+                  {{-- <div class="form-group{{ $errors->has('e') ? ' has-error' : '' }}">
                   {!! Form::label('e', 'E - Option') !!}
                   {!! Form::text('e', null, ['class' => 'form-control', 'placeholder' => 'Please Enter E Option']) !!}
                   <small class="text-danger">{{ $errors->first('e') }}</small>
-                  </div>
+                  </div> --}}
 
-                  <div class="form-group{{ $errors->has('f') ? ' has-error' : '' }}">
+                  {{-- <div class="form-group{{ $errors->has('f') ? ' has-error' : '' }}">
                   {!! Form::label('f', 'F - Option') !!}
                   {!! Form::text('f', null, ['class' => 'form-control', 'placeholder' => 'Please Enter F Option']) !!}
                   <small class="text-danger">{{ $errors->first('f') }}</small>
-                  </div>
+                  </div> --}}
 
               </div>
               <div class="col-md-4">
@@ -303,8 +303,6 @@ Patna-800001, Bihar, India
             <th>B - Option</th>
             <th>C - Option</th>
             <th>D - Option</th>
-            <th>E - Option</th>
-            <th>F - Option</th>
             <th>Correct Answer</th>
             <th>Actions</th>
           </tr>
@@ -341,8 +339,6 @@ Patna-800001, Bihar, India
       {data: 'b', name: 'b'},
       {data: 'c', name: 'c'},
       {data: 'd', name: 'd'},
-      {data: 'e', name: 'e'},
-      {data: 'f', name: 'f'},
       {data: 'answer', name: 'answer'},
       {data: 'action', name: 'action',searchable: false}
 

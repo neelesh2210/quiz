@@ -17,11 +17,12 @@
           <tr>
             <th>#</th>
             <th>Student Name</th>
-            <th>Mobile No.</th>            
-            <th>Topic</th>
-            <th>Total Question Marks</th>
+            <th>Mobile No.</th>    
+            <th>Whatsapp No.</th>  
+            <th>Borad</th> 
+            <th>District</th>          
+            <th>Exam</th>
             <th>Marks you Got</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -32,11 +33,11 @@
                   {{$key+1}}
                 </td>
                 <td>{{$student->name}}</td>
-                <td>{{$student->mobile ? $student->mobile : '-'}}</td>               
+                <td>{{$student->mobile ? $student->mobile : '-'}}</td> 
+                <td>{{$student->whatsappnum ? $student->whatsappnum : '-'}}</td>   
+                <td>{{$student->board}}</td> 
+                <td>{{$student->city}}</td>                  
                 <td>{{$topic->title}}</td>
-                <td>
-                  {{$c_que*$topic->per_q_mark}}
-                </td>
                 <td>
                   @php
                     $mark = 0;
@@ -53,39 +54,6 @@
                     $correct = $mark*$topic->per_q_mark;
                   @endphp
                   {{$correct}}
-                </td>
-                
-                <td>
-                  <a data-toggle="modal" data-target="#delete{{ $topic->id }}" title="It will delete the answer sheet of this student" href="#" class="btn btn-sm btn-warning">
-                    Reset Response
-                  </a>
-
-                  <a href="{{ route('pdf.report',['id' => $topic->id, 'userid' => $student->id]) }}" title="Download in PDF Format" class="btn btn-md btn-default">
-                     <i class="fa fa-download"></i>
-                  </a>
-
-                  <div id="delete{{ $topic->id }}" class="delete-modal modal fade" role="dialog">
-                      <!-- Delete Modal -->
-                      <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <div class="delete-icon"></div>
-                          </div>
-                          <div class="modal-body text-center">
-                            <h4 class="modal-heading">Are You Sure ?</h4>
-                            <p>Do you really want to delete these record? This process cannot be undone.</p>
-                          </div>
-                          <div class="modal-footer">
-                            {!! Form::open(['method' => 'DELETE', 'action' => ['AllReportController@delete', 'topicid' => $topic->id, 'userid' => $student->id] ]) !!}
-                                {!! Form::reset("No", ['class' => 'btn btn-gray', 'data-dismiss' => 'modal']) !!}
-                                {!! Form::submit("Yes", ['class' => 'btn btn-danger']) !!}
-                            {!! Form::close() !!}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
                 </td>
               </tr>
             @endforeach

@@ -156,9 +156,9 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{$count_questions}}</td>
+                  <td>15</td>
                   <td>{{$topic->per_q_mark}}</td>
-                  <td>{{$topic->per_q_mark*$count_questions}}</td>
+                  <td>{{$topic->per_q_mark*15}}</td>
                   <td>
 
                     @php

@@ -211,68 +211,79 @@ class UsersController extends Controller
           'mobile' => 'sometimes|nullable|min:10'
         ]);
 
-        $input = $request->all();
-
-        if (Auth::user()->role == 'A') 
+        $user_check=User::where('email',$request->email)->first();
+        if(empty($user_check))
         {
-          $user->name = $request->name;
-          $user->email = $request->email;
-          $user->mobile = $request->mobile;
-          $user->address = $request->address;
-          $user->city = $request->city;
-
-          if($request->password !="")
+          $input = $request->all();
+  
+          if (Auth::user()->role == 'A') 
           {
-            $user->password = bcrypt($request->password);
-          }
-
-          if ($file = $request->file('image'))
-          {
-            if($user->image !="")
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+            $user->address = $request->address;
+            $user->city = $request->city;
+  
+            if($request->password !="")
             {
-              unlink('images/user/'.$user->image);
+              $user->password = bcrypt($request->password);
             }
-
-            $name = time().$file->getClientOriginalName();
-            $file->move('images/user', $name);
-            $user->image = $name;      
-          }
-
-          $user->save();
-
-        } 
-        else if (Auth::user()->role == 'S') 
-        {
-          $user->name = $request->name;
-          $user->email = $request->email;
-          $user->whatsappnum = $request->whatsappnum;
-          $user->board = $request->board;
-          $user->class1 = $request->class1;
-          $user->address = $request->address;
-          $user->city = $request->city;
-
-          if($request->password !="")
-          {
-            $user->password = bcrypt($request->password);
-          }
-
+  
             if ($file = $request->file('image'))
             {
               if($user->image !="")
               {
                 unlink('images/user/'.$user->image);
               }
-
+  
               $name = time().$file->getClientOriginalName();
               $file->move('images/user', $name);
-              $user->image = $name;
+              $user->image = $name;      
             }
-
-          $user->save();
+  
+            $user->save();
+  
+          } 
+          else if (Auth::user()->role == 'S') 
+          {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->whatsappnum = $request->whatsappnum;
+            $user->board = $request->board;
+            $user->class1 = $request->class1;
+            $user->address = $request->address;
+            $user->city = $request->city;
+  
+            if($request->password !="")
+            {
+              $user->password = bcrypt($request->password);
+            }
+  
+              if ($file = $request->file('image'))
+              {
+                if($user->image !="")
+                {
+                  unlink('images/user/'.$user->image);
+                }
+  
+                $name = time().$file->getClientOriginalName();
+                $file->move('images/user', $name);
+                $user->image = $name;
+              }
+  
+            $user->save();
+  
+          }
+  
+          return back()->with('updated', 'Student has been updated');
 
         }
+        else
+        {
+          return back()->withError('Your Email ID Already Exists!');;
+        }
 
-        return back()->with('updated', 'Student has been updated');
+
     }
 
     /**

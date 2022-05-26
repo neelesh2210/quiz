@@ -1,5 +1,5 @@
 @extends('layouts.admin', [
-  'page_header' => 'Quiz',
+  'page_header' => 'Exam',
   'dash' => '',
   'quiz' => 'active',
   'users' => '',
@@ -11,7 +11,7 @@
 
 @section('content')
   <div class="margin-bottom">
-    <button type="button" class="btn btn-wave" data-toggle="modal" data-target="#createModal">Add Quiz</button>
+    <button type="button" class="btn btn-wave" data-toggle="modal" data-target="#createModal">Add Exam</button>
   </div>
   <!-- Create Modal -->
   <div id="createModal" class="modal fade" role="dialog">
@@ -19,7 +19,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add Quiz</h4>
+          <h4 class="modal-title">Add Exam</h4>
         </div>
         {!! Form::open(['method' => 'POST', 'action' => 'TopicController@store']) !!}
           <div class="modal-body">
@@ -100,7 +100,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Quiz Title</th>
+            <th>Exam Title</th>
             <th>Description</th>
             <th>Per Question Mark</th>
             <th>Time</th>

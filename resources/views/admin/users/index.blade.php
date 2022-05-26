@@ -119,12 +119,13 @@
             <tr>
               <th>#</th>
               <th>User Image</th>
-              <th>Student Name</th>
-              <th>Email</th>
+              <th>Student Name</th>              
               <th>Mobile No.</th>
-              <th>User Role</th>
-              <th>City</th>
-              <th>Address</th>
+              <th>Whatsapp No.</th>
+              <th>Email</th>
+              <th>Class</th>
+              <th>Board</th>
+              <th>District</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -156,11 +157,12 @@
       {data: 'DT_RowIndex', name: 'DT_RowIndex',orderable: false, searchable: false},
       {data: 'image', name: 'image',searchable: false},
       {data: 'name', name: 'name'},
-      {data: 'email', name: 'email'},
       {data: 'mobile', name: 'mobile'},
-      {data: 'role', name: 'role'},
+      {data: 'whatsappnum', name: 'whatsappnum'},
+      {data: 'email', name: 'email'},
+      {data: 'class1', name: 'class1'},
+      {data: 'board', name: 'board'},
       {data: 'city', name: 'city'},
-      {data: 'address', name: 'address'},
       {data: 'action', name: 'action',searchable: false}
       ],
       dom : 'lBfrtip',

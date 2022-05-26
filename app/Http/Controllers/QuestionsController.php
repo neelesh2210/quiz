@@ -40,14 +40,6 @@ class QuestionsController extends Controller
         $answer=Answer::where('topic_id',$id)->where('user_id',Auth::user()->id)->where('question_id',$request->question_id)->first();
         if(empty($answer))
         {
-          $topic=Topic::where('id',$id)->first();
-          $physics_questions=Question::where('topic_id',$id)->where('subject','physics')->get()->shuffle()->take(5);
-          $chemistry_questions=Question::where('topic_id',$id)->where('subject','chemistry')->get()->shuffle()->take(5);
-          $biology_questions=Question::where('topic_id',$id)->where('subject','biology')->get()->shuffle()->take(5);
-
-          $array1=array_merge($physics_questions->toArray(),$chemistry_questions->toArray());
-          $final_array=array_merge($array1,$biology_questions->toArray());
-          $questions = $this->paginate($final_array);
           if($request->ajax())
           {
               Answer::create([
@@ -57,11 +49,65 @@ class QuestionsController extends Controller
                 'user_answer'=>$request->user_answer,
                 'answer'=>Question::where('id',$request->question_id)->first()->answer
               ]);
+              
+          $topic=Topic::where('id',$id)->first();          
+           $check_questions=Answer::where('topic_id',$id)->where('user_id',Auth::user()->id)->pluck('question_id');
+
+           $phy_que=[];
+
+               foreach($check_questions as $check_question) 
+               {
+                  $physics_questions=Question::where('topic_id',$id)->where('subject','physics')->where('id','!=',$check_question)->get()->shuffle();
+                  foreach($physics_questions as $physics_question)
+                  {
+                    array_push($phy_que,$physics_question);
+                  }
+               }
+
+               $physics_questions= array_slice($phy_que, 0, 5, true);
+
+               $che_que=[];
+
+               foreach($check_questions as $check_question) 
+               {
+                $chemistry_questions=Question::where('topic_id',$id)->where('subject','chemistry')->get()->shuffle();
+                  foreach($chemistry_questions as $chemistry_question)
+                  {
+                    array_push($che_que,$chemistry_question);
+                  }
+               }
+
+               $chemistry_questions= array_slice($che_que, 0, 5, true);
+
+               $bio_que=[];
+
+               foreach($check_questions as $check_question) 
+               {
+                $biology_questions=Question::where('topic_id',$id)->where('subject','biology')->get()->shuffle();
+                  foreach($biology_questions as $biology_question)
+                  {
+                    array_push($bio_que,$biology_question);
+                  }
+               }
+
+               $biology_questions= array_slice($bio_que, 0, 5, true);         
+
+          $array1=array_merge($physics_questions,$chemistry_questions);
+          $final_array=array_merge($array1,$biology_questions);
+          $questions = $this->paginate($final_array);
 
               return view('quiz.question.question',compact('questions','topic'));
           }
           else
           {
+          $topic=Topic::where('id',$id)->first();          
+          $physics_questions=Question::where('topic_id',$id)->where('subject','physics')->get()->shuffle()->take(5);
+          $chemistry_questions=Question::where('topic_id',$id)->where('subject','chemistry')->get()->shuffle()->take(5);
+          $biology_questions=Question::where('topic_id',$id)->where('subject','biology')->get()->shuffle()->take(5);
+
+          $array1=array_merge($physics_questions->toArray(),$chemistry_questions->toArray());
+          $final_array=array_merge($array1,$biology_questions->toArray());
+          $questions = $this->paginate($final_array);
               return view('quiz.question.index',compact('questions','topic'));
           }
         }
