@@ -78,7 +78,7 @@ class LoginController extends Controller {
         }
    // $otp = mt_rand(1000,9999);
    $otp= 1234;
-        $url = "https://www.hellotext.live/vb/apikey.php?apikey=X1FVx6tERU3AdWEN&senderid=SUZUST&templateid=1707164984961292994&number=".$request->mobile."&message=Your%20OTP%20Verification%20Code%20is%20".$otp."%20for%20login.SUZUST";
+        $url = "#";
 
         $crl = curl_init();
         curl_setopt($crl, CURLOPT_URL, $url);
@@ -116,7 +116,7 @@ class LoginController extends Controller {
         if($user){
 
         $otp = $user->otp;
-        $url = "https://www.hellotext.live/vb/apikey.php?apikey=X1FVx6tyRU3AdWEN&senderid=SUZUST&templateid=1707164984961292994&number=".$request->mobile_number."&message=Your%20OTP%20Verification%20Code%20is%20".$otp."%20for%20login.SUZUST";
+        $url = "#";
 
         $crl = curl_init();
         curl_setopt($crl, CURLOPT_URL, $url);
