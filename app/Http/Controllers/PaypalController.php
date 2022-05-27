@@ -10,6 +10,7 @@ use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\ExecutePayment;
 use PayPal\Api\Item;
+use Illuminate\Support\Str;
 use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
@@ -23,108 +24,95 @@ use Session;
 use Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Topic;
+use App\topic_user;
 use App\Setting;
+use Razorpay\Api\Api;
 
 class PaypalController extends Controller
 {
+   //test key
+   private $razorpayId = "rzp_test_66o0k8Qc6D6HOf";
+   private $razorpayKey = "sGcsoZrIsvY37tUnwmjN9Ow5";
 
-  private $_api_context;
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    /** setup PayPal api context **/
-    $paypal_conf = \Config::get('paypal');
+   public function Complete(Request $request) {
+    // Now verify the signature is correct . We create the private function for verify the signature
+    $signatureStatus = $this->SignatureVerify(
+            $request->razorpay_signature, $request->razorpay_payment_id, $request->razorpay_order_id
+    );
 
-    $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
-    
-    $this->_api_context->setConfig($paypal_conf['settings']);
-  }
+    // If Signature status is true We will save the payment response in our database
+    // In this tutorial we send the response to Success page if payment successfully made
+    if ($signatureStatus == true) {
+        $order = topic_user::where(["transaction_id" => $request->razorpay_order_id])->first();
+        if ($order) {
+                $order->status = 1;
+                if ($order->save()) {
+                }           
+        }
 
+        return redirect('/')->with('added', 'Payment successfully done');
+        // You can create this page
+//            return view('payment-success-page');
+    } else {
+      return redirect('/')->with('deleted', 'Payment Cancelled');;
+        // You can create this page
+//            return view('payment-failed-page');
+    }
+}
+
+// In this function we return boolean if signature is correct
+private function SignatureVerify($_signature, $_paymentId, $_orderId) {
+    try {
+        // Create an object of razorpay class
+        $api = new Api($this->razorpayId, $this->razorpayKey);
+        $attributes = array('razorpay_signature' => $_signature, 'razorpay_payment_id' => $_paymentId, 'razorpay_order_id' => $_orderId);
+        $order = $api->utility->verifyPaymentSignature($attributes);
+        return true;
+    } catch (\Exception $e) {
+        // If Signature is not correct its give a excetption so we use try catch
+        return false;
+    }
+}
   public function paypal_post(Request $request)
   {
-    // $validator = Validator::make($request->all(), [
-    //   'topic_id' => 'required',
-    // ]);
-  
-    // if ($validator->fails()) {
-    //   return redirect('payment/add-funds/paypal')
-    //     ->withErrors($validator)
-    //     ->withInput();
-    // }
 
-    $topic = Topic::findorfail($request->input('topic_id'));
-    $setting = Setting::whereId(1)->first();
-    $payer = new Payer();
-    $payer->setPaymentMethod('paypal');
-  
-    $item = new Item();
-    $item->setName('Amount to Add')// item name
-      ->setCurrency($setting->currency_code)
-      ->setQuantity(1)
-      ->setPrice($topic->amount); // unit price
-    
-    // add item to list
-    $item_list = new ItemList();
-    $item_list->setItems([$item]);
-    
-    $amount = new Amount();
-    $amount->setCurrency($setting->currency_code)
-      ->setTotal($topic->amount);
-    
-    $transaction = new Transaction();
-    $transaction->setAmount($amount)
-      ->setItemList($item_list)
-      ->setDescription('Amount to Add');
-    
-    $redirect_urls = new RedirectUrls();
-    // Specify return & cancel URL
-    $redirect_urls->setReturnUrl(route('paypal_success'))
-      ->setCancelUrl(route('paypal_cancel'));
-  
-    $payment = new Payment();
-    $payment->setIntent('Sale')
-        ->setPayer($payer)
-        ->setRedirectUrls($redirect_urls)
-        ->setTransactions(array($transaction));
-        /** dd($payment->create($this->_api_context));exit; **/
-    try {
-        $payment->create($this->_api_context);
-    } catch (\Exception $ex) {
-      //dd($ex->getData()) ;
-        // if (\Config::get('app.debug')) {
+    $dbOrder = new topic_user();
+                $dbOrder->user_id = auth()->user()->id;
+                $dbOrder->topic_id = $request->topic_id;
+                $dbOrder->status = 0;
+                $dbOrder->amount = $request->topic_amt;
+                $amount = $dbOrder->amount *100;
+                $dbOrder->transaction_id = NULL;
+       // Generate random receipt id
+       $receiptId = Str::random(20);
 
-        //     return back()->with('deleted', $ex->getMessage());
-            
-        // } else { 
-          // flash($ex->getData())->error()->important();
-            return back()->with('deleted', $ex->getMessage());
-            /** die('Some error occur, sorry for inconvenient'); **/
-        // }
-    }
-  
-    foreach ($payment->getLinks() as $link) {
-      if ($link->getRel() == 'approval_url') {
-        $redirect_url = $link->getHref();
-        break;
-      }
-    }
-    // add payment ID to session
-    Session::put('paypal_payment_id', $payment->getId());
-    Session::put('topic', $topic);
-    Session::put('wemail', $setting->w_email);
-    
-    if (isset($redirect_url)) {
-      // redirect to paypal
-      return redirect($redirect_url);
-    }
-    
-    Session::flash('alert', 'Unknown error occurred');
-    Session::flash('alertClass', 'danger no-auto-close');
-    return back();
+       // Create an object of razorpay
+       $api = new Api($this->razorpayId, $this->razorpayKey);
+
+       // In razorpay you have to convert rupees into paise we multiply by 100
+       // Currency will be INR
+       // Creating order
+       $order = $api->order->create([
+           'receipt' => $receiptId,
+           'amount' => $amount,
+           'currency' => 'INR'
+       ]);
+       $dbOrder->transaction_id = $order['id'];
+       $dbOrder->save();
+       // Return response on payment page
+       $response = [
+           'orderId' => $order['id'],
+           'razorpayId' => $this->razorpayId,
+           'amount' => $amount,
+           'name' => auth()->user()->name,
+           'currency' => 'INR',
+           'email' => auth()->user()->email,
+           'contactNumber' => auth()->user()->mobile,
+           'address' => 'patna',
+           'description' => 'Testing description',
+       ];
+      // Let's checkout payment page is it working
+        return view('payment-page', compact('response'));
   }
 
   // Paypal process payment after it is done

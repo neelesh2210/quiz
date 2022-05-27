@@ -88,6 +88,9 @@
 
 @section('content')
   @if ($auth)
+  @php
+                      $ccd=App\topic_user::where('user_id', auth()->user()->id)->where('status',0)->delete();
+                    @endphp
 <div class="container">
     <div class="quiz-main-block">
       <div class="row">
@@ -162,6 +165,7 @@
                       {!! Form::open(['method' => 'POST', 'action' => 'PaypalController@paypal_post']) !!} 
                         {{ csrf_field() }}
                         <input type="hidden" name="topic_id" value="{{$topic->id}}"/>
+                        <input type="hidden" name="topic_amt" value="{{$topic->amount}}"/>
                          @if(!empty($topic->amount)) 
                         <button type="submit" class="btn btn-default">Pay  <i class="{{$setting->currency_symbol}}"></i>{{$topic->amount}}</button>
                           @else 

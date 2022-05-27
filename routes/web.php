@@ -189,6 +189,7 @@ Route::post('/logout', 'LoginController@logout')->name('logout');
   // Handle status
   Route::get('payment/paypal_success', 'PaypalController@paypal_success')->name('paypal_success');
   Route::get('payment/paypal_cancel', 'PaypalController@paypal_cancel')->name('paypal_cancel');
+  Route::post('/payment-response', 'PaypalController@complete')->name('site.payment.response');
 
 });
 
