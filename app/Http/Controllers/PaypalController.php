@@ -31,8 +31,8 @@ use Razorpay\Api\Api;
 class PaypalController extends Controller
 {
    //test key
-   private $razorpayId = "rzp_test_66o0k8Qc6D6HOf";
-   private $razorpayKey = "sGcsoZrIsvY37tUnwmjN9Ow5";
+   private $razorpayId = "rzp_test_RQPmWIi3E6qNUc";
+   private $razorpayKey = "9BqcbNQGRrE6275JUTAZUdQa";
 
    public function Complete(Request $request) {
     // Now verify the signature is correct . We create the private function for verify the signature
