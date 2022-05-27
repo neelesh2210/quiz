@@ -49,41 +49,13 @@ class QuestionsController extends Controller
         $topic=Topic::where('id',$id)->first();          
         $check_questions=Answer::where('topic_id',$id)->where('user_id',Auth::user()->id)->pluck('question_id')->toArray();
 
-        $phy_que=[];
-        foreach($check_questions as $check_question) 
-        {
-          $physics_questions=Question::where('topic_id',$id)->where('subject','physics')->where('id','!=',$check_question)->get()->shuffle();
-          foreach($physics_questions as $physics_question)
-          {
-            array_push($phy_que,$physics_question);
-          }
-        }
-        $physics_questions= array_slice($phy_que, 0, 5, true);
+        $physics_questions=Question::where('topic_id',$id)->where('subject','physics')->whereNotIn('id',$check_questions)->get()->take(5)->shuffle();
+        $chemistry_questions=Question::where('topic_id',$id)->where('subject','chemistry')->whereNotIn('id',$check_questions)->get()->take(5)->shuffle();
+        $biology_questions=Question::where('topic_id',$id)->where('subject','biology')->whereNotIn('id',$check_questions)->get()->take(5)->shuffle();
+        
 
-        $che_que=[];
-        foreach($check_questions as $check_question) 
-        {
-          $chemistry_questions=Question::where('topic_id',$id)->where('subject','chemistry')->where('id','!=',$check_question)->get()->shuffle();
-          foreach($chemistry_questions as $chemistry_question)
-          {
-            array_push($che_que,$chemistry_question);
-          }
-        }
-        $chemistry_questions= array_slice($che_que, 0, 5, true);
-
-        $bio_que=[];
-        foreach($check_questions as $check_question) 
-        {
-          $biology_questions=Question::where('topic_id',$id)->where('subject','biology')->where('id','!=',$check_question)->get()->shuffle();
-          foreach($biology_questions as $biology_question)
-          {
-            array_push($bio_que,$biology_question);
-          }
-        }
-        $biology_questions= array_slice($bio_que, 0, 5, true);         
-
-        $array1=array_merge($physics_questions,$chemistry_questions);
-        $final_array=array_merge($array1,$biology_questions);
+        $array1=array_merge($physics_questions->toArray(),$chemistry_questions->toArray());
+        $final_array=array_merge($array1,$biology_questions->toArray());
         $questions = $this->paginate($final_array);
 
         return view('quiz.question.question',compact('questions','topic'));

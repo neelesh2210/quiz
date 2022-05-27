@@ -78,7 +78,7 @@ class LoginController extends Controller {
         }
    // $otp = mt_rand(1000,9999);
    $otp= 1234;
-        $url = "#";
+        $url = "google.com";
 
         $crl = curl_init();
         curl_setopt($crl, CURLOPT_URL, $url);
