@@ -76,9 +76,9 @@ class LoginController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-   // $otp = mt_rand(1000,9999);
-   $otp= 1234;
-        $url = "google.com";
+   $otp = mt_rand(1000,9999);
+  // $otp= 1234;
+        $url = "http://smsjust.com/sms/user/urlsms.php?username=brilliantidea&pass=Ajay@12345&senderid=BTIDEA&message=Your+OTP+verification+code+is+".$otp."+for+login.+Brilliant&dest_mobileno=".$request->mobile."&msgtype=TXT&response=Y";
 
         $crl = curl_init();
         curl_setopt($crl, CURLOPT_URL, $url);
@@ -116,7 +116,8 @@ class LoginController extends Controller {
         if($user){
 
         $otp = $user->otp;
-        $url = "#";
+    $url = "http://smsjust.com/sms/user/urlsms.php?username=brilliantidea&pass=Ajay@12345&senderid=BTIDEA&message=Your+OTP+verification+code+is+".$otp."+for+login.+Brilliant&dest_mobileno=".$request->mobile."&msgtype=TXT&response=Y";
+
 
         $crl = curl_init();
         curl_setopt($crl, CURLOPT_URL, $url);
