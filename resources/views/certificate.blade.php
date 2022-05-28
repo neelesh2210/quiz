@@ -26,7 +26,7 @@
     
 <body>
     <div style="position: relative; width: 75%; margin: auto; padding: 15px; border: 4px solid black;">
-      <h2 style="position: absolute; right: 22%; top: 42%; color: #b32a24;">Abhishek Kumar</h2>
+      <h2 style="position: absolute; right: 22%; top: 42%; color: #b32a24;">{{auth()->user()->name}}</h2>
       <img src="{{asset('/images/certificate.jpg')}}" width="100%">
     </div>
     <div style="position: relative; width: 75%; padding: 20px; margin: auto; text-align: center;">
